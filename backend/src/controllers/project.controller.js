@@ -1,3 +1,5 @@
+import { io, onlineUsers } from "../server.js";
+
 import Project from "../models/Project.model.js";
 import AsyncHandler from "../utils/AsyncHandler.js";
 import ApiError from "../utils/ApiError.js";
@@ -272,6 +274,25 @@ const sendJoinRequest = AsyncHandler(async (req, res) => {
     type: "join_request",
     message: `${req.user.fullName} requested to join your project "${project.title}".`
 });
+
+const ownerSocketId = onlineUsers.get(
+    project.owner.toString()
+);
+
+if (ownerSocketId) {
+    io.to(ownerSocketId).emit("newNotification", {
+        type: "join_request",
+        sender: {
+            _id: req.user._id,
+            fullName: req.user.fullName,
+        },
+        project: {
+            _id: project._id,
+            title: project.title,
+        },
+        message: `${req.user.fullName} requested to join your project.`,
+    });
+}
 
     return res.status(200).json(
         new ApiResponse(

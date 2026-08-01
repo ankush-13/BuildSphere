@@ -33,7 +33,7 @@ export const io = new Server(server, {
 // Online Users
 // ===============================
 
-const onlineUsers = new Map();
+export const onlineUsers = new Map();
 
 // ===============================
 // Socket.IO
