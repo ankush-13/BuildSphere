@@ -5,7 +5,7 @@ export const getMyProjects = () =>
     api.get("/projects/my-projects");
 
 export const createProject = (data) =>
-    api.post("/projects/create", data);
+    api.post("/projects", data);
 
 export const getProjectById = (id) =>
     api.get(`/projects/${id}`);
